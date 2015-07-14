@@ -1,0 +1,15 @@
+# file with variables. sets up the host specific stuff
+---
+  postgre_centos_rpm: http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+  postgre_oel_rpm: http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-oraclelinux94-9.4-1.noarch.rpm
+  oracle_env: 
+    ORACLE_HOME: /usr/lib/oracle/11.2/client64
+  postgres_env: 
+    POSTGRES_HOME: /usr/pgsql-9.4
+  ora2pg_tar: ora2pg-15.2.tar.gz
+  ora2pg: ora2pg-15.2
+  common_packages:
+      - gcc
+      - cpan
+      - postgresql94-plperl
+      - postgresql94-devel

@@ -1,0 +1,15 @@
+#file with common variables
+  epel_rpm: epel-release-6-8.noarch.rpm
+  ol6_repo_file: public-yum-ol6.repo
+  repo_dir: /etc/yum.repos.d/
+  repo_key_dir: /etc/pki/rpm-gpg/
+  repo_key_file: RPM-GPG-KEY-oracle
+  common_packages:
+      - screen
+      - ntp
+      - libselinux-python
+      - atop
+      - unzip
+      - wget
+      - sg3_utils
+      - parted

@@ -1,0 +1,47 @@
+#file:	roles/posgtres-host/tasks/main.yml
+
+- name: setup postgresql repo
+  yum: name={{ postgre_centos_rpm }} state=installed
+  when: ansible_distribution == 'CentOS'
+
+- name: setup postgresql repo
+  yum: name={{ postgre_oel_rpm }} state=installed
+  when: ansible_distribution == 'RedHat'
+
+- name: install cpan common packages
+  yum: name={{ item }} state=latest
+  with_items: common_packages
+
+#setup cpan
+- name: setup cpan module
+  shell: command /bin/echo y | /usr/bin/cpan 
+
+#setup cpan components
+- name: setup cpan TestSimple module
+  action: command /usr/bin/cpan Test::Simple
+
+- name: setup cpan DBI module
+  action: command /usr/bin/cpan DBI
+
+- name: setup cpan TimeHires module
+  action: command /usr/bin/cpan Time::HiRes
+
+- name: setup cpan DBDOracle module
+  action: command /usr/bin/cpan DBD::Oracle
+  environment: oracle_env
+
+- name: setup cpan DBDPg module
+  action: command /usr/bin/cpan DBD::Pg
+  environment: postgres_env
+
+- name: untar ora2pg
+  unarchive: src=/install/{{ora2pg_tar}} dest=/install
+
+- name: install ora2pg
+  shell: command /usr/bin/perl Makefile.PL chdir=/install/{{ora2pg}}
+
+- name: make ora2pg
+  shell: command /usr/bin/make  chdir=/install/{{ora2pg}}
+
+- name: make ora2pg
+  shell: command /usr/bin/make install  chdir=/install/{{ora2pg}}

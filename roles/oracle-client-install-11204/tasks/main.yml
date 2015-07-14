@@ -1,0 +1,35 @@
+#file:	roles/oracle-clietn-install-11204/tasks/main.yml
+
+#install oracle packages
+- name: copy basic client packages
+  copy: src=/install/{{client_file_1_rpm}} dest=/install/{{client_file_1_rpm}}
+
+- name: copy oracle devel client packages
+  copy: src=/install/{{client_file_2_rpm}} dest=/install/{{client_file_2_rpm}}
+
+- name: copy oracle sqlplus client packages
+  copy: src=/install/{{client_file_3_rpm}} dest=/install/{{client_file_3_rpm}}
+
+- name: copy oracle sqlplus client packages
+  copy: src=/install/{{client_file_4_rpm}} dest=/install/{{client_file_4_rpm}}
+
+- name: install oracle basic client packages
+  yum: name=/install/{{client_file_1_rpm}} state=installed
+
+- name: install oracle devel client packages
+  yum: name=/install/{{client_file_2_rpm}} state=installed
+
+- name: install oracle sqlplus client packages
+  yum: name=/install/{{client_file_3_rpm}} state=installed
+
+- name: install oracle jdbc client packages
+  yum: name=/install/{{client_file_4_rpm}} state=installed
+
+#create directories for tnsnames.ora
+- name: create network/admin folder
+  file: dest=/usr/lib/oracle/11.2/client64/network/admin mode=755 state=directory
+
+#upload profile file
+
+- name: upload profile file
+  copy: src=oracle.sh dest=/etc/profile.d/oracle.sh mode=0755

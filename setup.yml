@@ -1,0 +1,10 @@
+---
+- name: 'PostgreSQL Playbook'
+  hosts: postgres_nodes
+  user: root
+
+  roles:
+    - common-host
+    - postgres-host
+    - oracle-client-install-11204
+    - ora2pg-install

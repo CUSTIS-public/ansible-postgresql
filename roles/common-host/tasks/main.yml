@@ -1,0 +1,38 @@
+#file:	roles/common-host/tasks/main.yml
+- name: create install
+  file: dest=/install mode=755 state=directory
+
+- name: copy epel rpm
+  copy: src=/install/{{epel_rpm}} dest=/install/{{epel_rpm}}
+
+- name: install EPEL Repo
+  yum: name=/install/{{ epel_rpm }} state=installed
+  tags: epelrepo
+
+- name: be sure we using latest OL6 repo
+  get_url: dest={{ repo_dir}}/{{ ol6_repo_file }}  url=http://public-yum.oracle.com/{{ ol6_repo_file }} backup=yes
+  get_url: dest={{ repo_key_dir}}/{{ repo_key_file }} url=https://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+  tags: ol6repo
+
+- name: install common packages
+  yum: name={{ item }} state=installed
+  with_items: common_packages 
+  tags: commonpackages
+
+- name: be sure ntp is running
+  service: name=ntpd state=running enabled=yes
+  tags: ntp
+
+- name: disable selinux (permanently)
+  selinux: state=disabled
+  tags: selinux
+
+- name: disable iptables (permanently)
+  action: service name=iptables state=stopped enabled=no
+
+- name: disable iptables 6 (permanently)
+  action: service name=ip6tables state=stopped enabled=no
+
+- name: remove default requiretty
+  lineinfile: dest=/etc/sudoers line="Defaults    requiretty" state=absent
+  tags: remove_tty

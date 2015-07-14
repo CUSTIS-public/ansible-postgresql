@@ -1,0 +1,36 @@
+#file:	roles/posgtres-host/tasks/main.yml
+- name: create install directory
+  file: dest=/install state=directory
+
+- name: setup postgresql repo
+  yum: name={{ postgre_centos_rpm }} state=installed
+  when: ansible_distribution == 'CentOS'
+
+- name: setup postgresql repo
+  yum: name={{ postgre_oel_rpm }} state=installed
+  when: ansible_distribution == 'RedHat'
+
+- name: install postgresql common packages
+  yum: name={{ item }} state=latest
+  with_items: common_packages 
+  when: install_os_packages
+  tags: commonpackages
+
+- name: initialize postgre environment
+  when: initdb
+  action: command service postgresql-9.4 initdb
+
+- name: start and setup postgre as a service
+  service: name=postgresql-9.4  state=started  enabled=yes
+
+- name: copy pg_hba file
+  copy: src=pg_hba.conf dest=/var/lib/pgsql/9.4/data/ mode=0600
+  
+- name: set postgresql.conf access
+  lineinfile: dest=/var/lib/pgsql/9.4/data/postgresql.conf  line="listen_addresses = '*'" state=present
+
+- name: restart postgres
+  service: name=postgresql-9.4  state=restarted
+
+- name: upgrade all packages
+  action: command yum -y update

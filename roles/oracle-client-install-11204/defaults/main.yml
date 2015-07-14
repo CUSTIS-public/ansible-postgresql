@@ -1,0 +1,6 @@
+# file with variables. sets up the host specific stuff
+---
+  client_file_1_rpm: oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm
+  client_file_2_rpm: oracle-instantclient11.2-devel-11.2.0.4.0-1.x86_64.rpm
+  client_file_3_rpm: oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
+  client_file_4_rpm: oracle-instantclient11.2-jdbc-11.2.0.4.0-1.x86_64.rpm
